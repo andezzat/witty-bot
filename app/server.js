@@ -10,21 +10,6 @@ const response = require('./response');
 
 const app = express();
 
-// const actions = {
-//   send({ sessionId }, { text }) {
-//     const recipientId = sessions[sessionId].fbid;
-//     if (recipientId) {
-//       receivedBotResponse(recipientId, text);
-//       return Promise.resolve();
-//     }
-//   }
-// }
-//
-// const wit = new Wit({
-//   accessToken: WIT_SERVER_ACCESS_TOKEN,
-//   actions,
-//   logger: new log.Logger(log.INFO),
-// });
 
 app.set('port', (process.env.PORT || 5000));
 
