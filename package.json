@@ -1,0 +1,19 @@
+{
+  "name": "witty-bot",
+  "version": "0.1.0",
+  "description": "A Messenger Bot integrated with Wit.ai",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/andezzat/witty-bot.git"
+  },
+  "author": "Andrew Salib",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/andezzat/witty-bot/issues"
+  },
+  "homepage": "https://github.com/andezzat/witty-bot#readme"
+}
