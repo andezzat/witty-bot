@@ -18,6 +18,7 @@ const acknowledgeMessage = (recipientId) => {
 
 const sendMessage = (recipientId, message) => {
   const messageData = createMessageData(recipientId, message);
+  console.log(`Calling Send API with ${JSON.stringify(messageData)}`);
   callSendAPI(messageData);
 };
 

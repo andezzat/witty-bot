@@ -1,11 +1,30 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const { eventHandler } = require('./handler');
-const { createMessageData, createSenderAction } = require('../lib/facebook/send-api').objects;
+const Wit = require('node-wit').Wit;
+const log = require('node-wit').log;
+
+const { eventHandler, receivedBotResponse } = require('./handler');
 const { loopThroughEvents } = require('./helper');
+const { WIT_SERVER_ACCESS_TOKEN } = require('../config');
+const response = require('./response');
 
 const app = express();
 
+// const actions = {
+//   send({ sessionId }, { text }) {
+//     const recipientId = sessions[sessionId].fbid;
+//     if (recipientId) {
+//       receivedBotResponse(recipientId, text);
+//       return Promise.resolve();
+//     }
+//   }
+// }
+//
+// const wit = new Wit({
+//   accessToken: WIT_SERVER_ACCESS_TOKEN,
+//   actions,
+//   logger: new log.Logger(log.INFO),
+// });
 
 app.set('port', (process.env.PORT || 5000));
 
@@ -32,7 +51,6 @@ app.post('/webhook', (req, res, next) => {
   next();
 }, (req, res) => {
   const processMessage = (event) => {
-    const recipientId = event.sender.id;
     eventHandler(event);
   }
 
