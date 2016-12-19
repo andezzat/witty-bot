@@ -27,8 +27,10 @@ app.get('/', (req, res) => {
 app.get('/webhook', (req, res) => {
   if (req.query['hub.verify_token'] === 'verify_me_pls_123') {
     res.status(200).send(req.query['hub.challenge']);
-  }
-  res.send('Error, wrong token!');
+    console.log('Got a successfull webhook verification!');
+  } else {
+    res.send('Error, wrong token!');
+  };
 });
 
 app.post('/webhook', (req, res, next) => {

@@ -28,17 +28,17 @@ const receivedMessage = (event) => {
     text,
     sessions[sessionId].context
   ).then((context) => {
-    // If the context is done, delete this session. Aka: request has been fulfilled and context is now irrelevant to the flow of conversation.
-    if (context['done']) {
-      delete sessions[sessionId];
-    }
     // Update the context after all actions are run
     sessions[sessionId].context = context;
+    // If the context is done, delete this session. Aka: request has been fulfilled and context is now irrelevant to the flow of conversation.
+    if (context['done']) {
+      console.log('Context is done with, deleting session...');
+      delete sessions[sessionId];
+    }
   }).catch((err) => {
     // Catch any errors in the process
     console.error('Oops! Wit came back with an error: ', err.stack || err);
   });
-
 };
 
 const receivedPostback = (event) => {

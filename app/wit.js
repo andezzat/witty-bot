@@ -1,8 +1,9 @@
 const Wit = require('node-wit').Wit;
 const log = require('node-wit').log;
+const response = require('./response');
+const logic = require('./logic');
 
 const { WIT_SERVER_ACCESS_TOKEN } = require('../config');
-const response = require('./response');
 
 const sessions = {};
 
@@ -13,7 +14,24 @@ const actions = {
       receivedBotResponse(recipientId, text);
       return Promise.resolve();
     }
-  }
+  },
+  getAllShows({ sessionId, context, text, entities }) {
+    return new Promise((resolve, reject) => {
+      logic.getAllShows().then((shows) => {
+        context.shows = shows;
+        resolve(context);
+      }).catch((err) => {
+        context.error = err;
+        resolve(context);
+      });
+    });
+  },
+  clearContext({ sessionId, context }) {
+    return new Promise((resolve, reject) => {
+      context.done = true;
+      resolve(context);
+    });
+  },
 };
 
 const wit = new Wit({
