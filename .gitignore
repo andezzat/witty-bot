@@ -2,3 +2,4 @@ node_modules
 ngrok
 ngrok.exe
 config.js
+npm-debug.log

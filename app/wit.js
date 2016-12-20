@@ -15,6 +15,12 @@ const actions = {
       return Promise.resolve();
     }
   },
+  clearContext({ sessionId, context }) {
+    return new Promise((resolve, reject) => {
+      context.done = true;
+      resolve(context);
+    });
+  },
   getAllShows({ sessionId, context, text, entities }) {
     return new Promise((resolve, reject) => {
       logic.getAllShows().then((shows) => {
@@ -26,9 +32,19 @@ const actions = {
       });
     });
   },
-  clearContext({ sessionId, context }) {
+  getGif({ sessionId, context, text, entities }) {
     return new Promise((resolve, reject) => {
-      context.done = true;
+      console.log(entities);
+      logic.getGif('funny').then((url) => {
+        context.gif = url;
+        resolve(context);
+      });
+    });
+  },
+  sendImage({ sessionId, context, text, entities }) {
+    return new Promise((resolve, reject) => {
+      const fbid = findOrCreateSession(sessionId).fbid;
+      response.sendImage(context.gif, fbid);
       resolve(context);
     });
   },

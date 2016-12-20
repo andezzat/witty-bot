@@ -1,4 +1,5 @@
 const Sickrage = require('../lib/sickrage');
+const giphy = require('giphy-api');
 const transform = require('./transform');
 
 const { SICKRAGE_API_TOKEN } = require('../config');
@@ -20,8 +21,22 @@ const getAllShows = (opts) => {
       reject(err);
     });
   });
-}
+};
+
+const getGif = (query) => {
+  return new Promise((resolve, reject) => {
+    giphy.search({
+      q: query,
+      limit: 1,
+    }).then((res) => {
+      resolve(res.data[0].images.original.url);
+    }).catch((err) => {
+      reject(err);
+    });
+  });
+};
 
 module.exports = {
   getAllShows,
+  getGif,
 };

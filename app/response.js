@@ -1,6 +1,6 @@
-const { createSenderAction, createMessageData } = require('../lib/facebook/send-api').objects;
+const { createSenderAction, createMessageData, createAttachmentMessage } = require('../lib/facebook/send-api').objects;
 const { callSendAPI } = require('../lib/facebook/send-api').request;
-const { SENDER_ACTION } = require('../lib/facebook/send-api').constants;
+const { SENDER_ACTION, ATTACHMENT } = require('../lib/facebook/send-api').constants;
 
 const acknowledgeMessage = (recipientId) => {
   const senderActions = [];
@@ -22,14 +22,21 @@ const sendMessage = (recipientId, message) => {
   callSendAPI(messageData);
 };
 
+const sendImage = (recipientId, url) => {
+  const attachment = createAttachmentMessage(url, ATTACHMENT.IMAGE);
+  const messageData = createMessageData(recipientId, attachment);
+  callSendAPI(messageData);
+}
+
 const turnTypingOff = (recipientId) => {
   const typingOff = createSenderAction(recipientId, SENDER_ACTION.TYPING_OFF);
   console.log('Calling send API with: ', typingOff);
   callSendAPI(typingOff);
-}
+};
 
 module.exports = {
   acknowledgeMessage,
   sendMessage,
   turnTypingOff,
+  sendImage,
 }
