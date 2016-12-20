@@ -16,5 +16,12 @@
   "bugs": {
     "url": "https://github.com/andezzat/witty-bot/issues"
   },
-  "homepage": "https://github.com/andezzat/witty-bot#readme"
+  "homepage": "https://github.com/andezzat/witty-bot#readme",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "node-fetch": "^1.6.3",
+    "node-wit": "^4.2.0",
+    "request": "^2.79.0"
+  }
 }
