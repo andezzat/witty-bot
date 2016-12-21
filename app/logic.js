@@ -88,13 +88,11 @@ const updateMood = (entities) => {
     }
   });
 
-  console.log('\n\nFeeling: ', feeling);
-
   switch (feeling) {
     case FEELINGS.POSITIVE:
     case FEELINGS.NEGATIVE:
         const newHappiness = getNewHappiness(feeling, mood.happiness);
-        console.log('New Happineses: ', newHappiness);
+        console.log('New Happiness: ', newHappiness);
         mood.happiness = newHappiness;
       break;
   }
