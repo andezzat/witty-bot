@@ -1,5 +1,5 @@
 const _ = require('lodash');
-const { FEELINGS } = require('./constants');
+const { FEELINGS, MOOD_LIMITS } = require('./constants');
 
 const loopThroughEvents = (req, execute) => {
   const data = req.body;
@@ -41,8 +41,22 @@ const convertFeeling = (feeling, object) => {
   return result;
 };
 
+const getNewHappiness = (feeling, happiness) => {
+  console.log('Happiness is ', happiness, 'and feeling is: ', feeling);
+  if (happiness <= MOOD_LIMITS.HAPPINESS.MAX && happiness >= MOOD_LIMITS.HAPPINESS.MIN) {
+    if (feeling === FEELINGS.POSITIVE) {
+      return happiness + 1;
+    } else if (feeling === FEELINGS.NEGATIVE) {
+      return happiness - 1;
+    }
+  } else {
+    return happiness;
+  }
+};
+
 module.exports = {
   loopThroughEvents,
   loopThroughEntities,
   convertFeeling,
+  getNewHappiness,
 }

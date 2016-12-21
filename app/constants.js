@@ -7,6 +7,16 @@ const FEELINGS = {
   UNKNOWN: 'unknown',
 };
 
+const MOOD_LIMITS = {
+  HAPPINESS: {
+    MIN: -5,
+    MAX: 5,
+  },
+};
+
+MOOD_LIMITS.HAPPINESS[FEELINGS.POSITIVE] = 3;
+MOOD_LIMITS.HAPPINESS[FEELINGS.NEGATIVE] = -3;
+
 const GREETINGS = {};
 
 GREETINGS[FEELINGS.POSITIVE] = [
@@ -22,8 +32,8 @@ GREETINGS[FEELINGS.NEUTRAL] = [
 ];
 GREETINGS[FEELINGS.NEGATIVE] = [
   "Hey... :(",
-  "Hi",
-  "Hello",
+  "Hi :(",
+  "Hello.. :'(",
 ];
 GREETINGS[FEELINGS.ANGRY] = [
   "What do you want, human? >:(",
@@ -99,4 +109,5 @@ module.exports = {
   ACKNOWLEDGING_PHRASES,
   GIF_QUERIES,
   GREETINGS,
+  MOOD_LIMITS,
 }

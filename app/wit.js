@@ -42,6 +42,7 @@ const actions = {
   getGifAndAcknowledgement({ sessionId, context, text, entities }) {
     return new Promise((resolve, reject) => {
       context.acknowledgement = logic.getResponse(entities);
+      logic.updateMood(entities);
       logic.getGif(entities).then((url) => {
         context.gif = url;
         resolve(context);
