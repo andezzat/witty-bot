@@ -7,10 +7,34 @@ const FEELINGS = {
   UNKNOWN: 'unknown',
 };
 
+const GREETINGS = {};
+
+GREETINGS[FEELINGS.POSITIVE] = [
+  "Hey! ^_^",
+  "Hello, human :D",
+  "Why, hello :)",
+  "Hi :)",
+];
+GREETINGS[FEELINGS.NEUTRAL] = [
+  "Hey",
+  "Oh, Hi.",
+  "Hello",
+];
+GREETINGS[FEELINGS.NEGATIVE] = [
+  "Hey... :(",
+  "Hi",
+  "Hello",
+];
+GREETINGS[FEELINGS.ANGRY] = [
+  "What do you want, human? >:(",
+  "Leave me alone!",
+  "Go away!",
+];
+
 const ACKNOWLEDGING_PHRASES = {};
 
 ACKNOWLEDGING_PHRASES[FEELINGS.POSITIVE] = [
-  "I'm glad",
+  "I'm glad you feel that way :)",
   "Awesome!",
   "That's good :D",
   "That makes me happy :)",
@@ -45,7 +69,6 @@ const GIF_QUERIES = {};
 
 GIF_QUERIES[FEELINGS.POSITIVE] = [
   "yay",
-  "wooho",
   "happy",
 ];
 GIF_QUERIES[FEELINGS.NEUTRAL] = [
@@ -75,4 +98,5 @@ module.exports = {
   FEELINGS,
   ACKNOWLEDGING_PHRASES,
   GIF_QUERIES,
+  GREETINGS,
 }

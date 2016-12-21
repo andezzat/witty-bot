@@ -22,6 +22,12 @@ const actions = {
       resolve(context);
     });
   },
+  getGreeting({ sessionId, context, text, entities }) {
+    return new Promise((resolve, reject) => {
+      context.greeting = logic.getResponse(entities);
+      resolve(context);
+    });
+  },
   getAllShows({ sessionId, context, text, entities }) {
     return new Promise((resolve, reject) => {
       logic.getAllShows().then((shows) => {
@@ -35,7 +41,7 @@ const actions = {
   },
   getGifAndAcknowledgement({ sessionId, context, text, entities }) {
     return new Promise((resolve, reject) => {
-      context.acknowledgement = logic.getAcknowledgement(entities);
+      context.acknowledgement = logic.getResponse(entities);
       logic.getGif(entities).then((url) => {
         context.gif = url;
         resolve(context);

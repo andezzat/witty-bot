@@ -1,9 +1,9 @@
 const _ = require('lodash');
 const Sickrage = require('../lib/sickrage');
-const Giphy = require('giphy-api');
+const Giphy = require('../lib/giphy-api');
 const transform = require('./transform');
-const { convertFeelingToGifQuery, convertFeelingToAcknowledgement } = require('./helper');
-const { FEELINGS } = require('./constants');
+const { convertFeeling, loopThroughEntities } = require('./helper');
+const { FEELINGS, GIF_QUERIES, GREETINGS, ACKNOWLEDGING_PHRASES } = require('./constants');
 
 const { SICKRAGE_API_TOKEN } = require('../config');
 
@@ -37,11 +37,7 @@ const getGif = (entities) => {
     if (search_query && intent !== 'acknowledgeFeelings') {
       query = search_query;
     } else if (intent === 'acknowledgeFeelings') {
-      _.forOwn(entities, (value, key) => {
-        if (key !== 'intent') {
-          query = convertFeelingToGifQuery(key);
-        }
-      });
+      query = loopThroughEntities(entities, convertFeeling, GIF_QUERIES);
     }
 
     console.log('\nAbout to look for Random Gif with query:', query);
@@ -53,23 +49,24 @@ const getGif = (entities) => {
   });
 };
 
-const getAcknowledgement = (entities) => {
-  let acknowledgement;
+const getResponse = (entities) => {
+  let response;
   const intent = _.get(entities, 'intent[0].value');
 
-  if (intent === 'acknowledgeFeelings') {
-    _.forOwn(entities, (value, key) => {
-      if (key !== 'intent') {
-        acknowledgement = convertFeelingToAcknowledgement(key);
-      }
-    });
-  };
+  switch (intent) {
+    case 'acknowledgeFeelings':
+      response = loopThroughEntities(entities, convertFeeling, ACKNOWLEDGING_PHRASES);
+      break;
+    case 'greeting':
+      response = _.sample(GREETINGS[FEELINGS.POSITIVE]);
+      break;
+  }
 
-  return acknowledgement;
+  return response;
 };
 
 module.exports = {
   getAllShows,
   getGif,
-  getAcknowledgement,
+  getResponse,
 };

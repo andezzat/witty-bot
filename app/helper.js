@@ -1,5 +1,5 @@
 const _ = require('lodash');
-const { GIF_QUERIES, FEELINGS, ACKNOWLEDGING_PHRASES } = require('./constants');
+const { FEELINGS } = require('./constants');
 
 const loopThroughEvents = (req, execute) => {
   const data = req.body;
@@ -13,40 +13,36 @@ const loopThroughEvents = (req, execute) => {
   }
 };
 
-const convertFeelingToGifQuery = (feeling) => {
-  let query;
+const loopThroughEntities = (entities, func, object) => {
+  let result;
 
-  _.forOwn(FEELINGS, (value, key) => {
-    if (feeling === value) {
-      query = _.sample(GIF_QUERIES[FEELINGS[key]]);
+  _.forOwn(entities, (value, key) => {
+    if (key !== 'intent') {
+      result = func(key, object);
     }
   });
 
-  if (!query) {
-    query = _.sample(GIF_QUERIES[FEELINGS.UNKNOWN]);
-  }
-
-  return query;
-};
-
-const convertFeelingToAcknowledgement = (feeling) => {
-  let acknowledgement;
-
-  _.forOwn(FEELINGS, (value, key) => {
-    if (feeling === value) {
-      acknowledgement = _.sample(ACKNOWLEDGING_PHRASES[FEELINGS[key]]);
-    }
-  });
-
-  if (!acknowledgement) {
-    acknowledgement = _.sample(ACKNOWLEDGING_PHRASES[FEELINGS.UNKNOWN]);
-  }
-
-  return acknowledgement;
+  return result;
 }
+
+const convertFeeling = (feeling, object) => {
+  let result;
+
+  _.forOwn(FEELINGS, (value, key) => {
+    if (feeling === value) {
+      result = _.sample(object[FEELINGS[key]]);
+    }
+  });
+
+  if (!result) {
+    result = _.sample(object[FEELINGS.UNKNOWN]);
+  }
+
+  return result;
+};
 
 module.exports = {
   loopThroughEvents,
-  convertFeelingToGifQuery,
-  convertFeelingToAcknowledgement
+  loopThroughEntities,
+  convertFeeling,
 }
