@@ -25,6 +25,7 @@ const sendMessage = (recipientId, message) => {
 const sendImage = (recipientId, url) => {
   const attachment = createAttachmentMessage(url, ATTACHMENT.IMAGE);
   const messageData = createMessageData(recipientId, attachment);
+  console.log(`Calling Send API with: ${JSON.stringify(messageData)}`);
   callSendAPI(messageData);
 }
 

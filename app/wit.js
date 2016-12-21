@@ -1,5 +1,6 @@
 const Wit = require('node-wit').Wit;
 const log = require('node-wit').log;
+const _ = require('lodash');
 const response = require('./response');
 const logic = require('./logic');
 
@@ -32,19 +33,33 @@ const actions = {
       });
     });
   },
+  getGifAndAcknowledgement({ sessionId, context, text, entities }) {
+    return new Promise((resolve, reject) => {
+      context.acknowledgement = logic.getAcknowledgement(entities);
+      logic.getGif(entities).then((url) => {
+        context.gif = url;
+        resolve(context);
+      }).catch((err) => {
+        context.error = err;
+        resolve(context);
+      });
+    });
+  },
   getGif({ sessionId, context, text, entities }) {
     return new Promise((resolve, reject) => {
-      console.log(entities);
-      logic.getGif('funny').then((url) => {
+      logic.getGif(entities).then((url) => {
         context.gif = url;
+        resolve(context);
+      }).catch((err) => {
+        context.error = err;
         resolve(context);
       });
     });
   },
   sendImage({ sessionId, context, text, entities }) {
     return new Promise((resolve, reject) => {
-      const fbid = findOrCreateSession(sessionId).fbid;
-      response.sendImage(context.gif, fbid);
+      const fbid = findSessionByID(sessionId).fbid;
+      response.sendImage(fbid, context.gif);
       resolve(context);
     });
   },
@@ -72,9 +87,21 @@ const findOrCreateSession = (fbid) => {
   return sessionId;
 };
 
+const findSessionByID = (sessionId) => {
+  let session;
+
+  Object.keys(sessions).forEach(k => {
+    if (k = sessionId) {
+      session = sessions[k];
+    };
+  });
+
+  return session;
+};
+
 const getSessions = () => {
   return sessions;
-}
+};
 
 const receivedBotResponse = (recipientId, text) => {
   response.turnTypingOff(recipientId);
