@@ -41,6 +41,16 @@ const convertFeeling = (feeling, object) => {
   return result;
 };
 
+const convertScoreToFeeling = (score, type, feelings) => {
+  if (score >= type[feelings.high]) {
+    return feelings.high;
+  } else if (score <= type[feelings.low]) {
+    return feelings.low;
+  } else if (feelings.neutral) {
+    return feelings.neutral;
+  }
+}
+
 const getNewHappiness = (feeling, happiness) => {
   console.log('Happiness is ', happiness, 'and feeling is: ', feeling);
   if (happiness <= MOOD_LIMITS.HAPPINESS.MAX && happiness >= MOOD_LIMITS.HAPPINESS.MIN) {
@@ -59,4 +69,5 @@ module.exports = {
   loopThroughEntities,
   convertFeeling,
   getNewHappiness,
+  convertScoreToFeeling,
 }

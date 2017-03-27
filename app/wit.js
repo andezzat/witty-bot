@@ -28,6 +28,12 @@ const actions = {
       resolve(context);
     });
   },
+  getMood({sessionId, context, text, entities }) {
+    return new Promise((resolve, reject) => {
+      context.mood = logic.getMood();
+      resolve(context);
+    });
+  },
   getAllShows({ sessionId, context, text, entities }) {
     return new Promise((resolve, reject) => {
       logic.getAllShows().then((shows) => {
@@ -68,6 +74,17 @@ const actions = {
       const fbid = findSessionByID(sessionId).fbid;
       response.sendImage(fbid, context.gif);
       resolve(context);
+    });
+  },
+  getYahooAuctions({ sessionId, context, text, entities }) {
+    return new Promise((resolve, reject) => {
+      logic.getYahooAuctions().then((res) => {
+        context.auctions = res;
+        resolve(context);
+      }).catch((err) => {
+        context.error = err;
+        resolve(context);
+      });
     });
   },
 };

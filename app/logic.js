@@ -2,13 +2,26 @@ const _ = require('lodash');
 const Sickrage = require('../lib/sickrage');
 const Giphy = require('../lib/giphy-api');
 const transform = require('./transform');
-const { convertFeeling, loopThroughEntities, getNewHappiness } = require('./helper');
-const { FEELINGS, GIF_QUERIES, GREETINGS, ACKNOWLEDGING_PHRASES, MOOD_LIMITS } = require('./constants');
+const { convertFeeling, loopThroughEntities, getNewHappiness, convertScoreToFeeling } = require('./helper');
+const { FEELINGS, GIF_QUERIES, GREETINGS, ACKNOWLEDGING_PHRASES, MOOD_LIMITS, CURRENT_MOOD } = require('./constants');
+const { scrape } = require('./scraper');
+const CONTACTS = require('./contacts.json');
+const { sendMessage } = require('./response');
 
 const { SICKRAGE_API_TOKEN } = require('../config');
 
 const mood = {};
 mood.happiness = 0;
+
+mood.currentHappiness = () => {
+  const currentHappiness = convertScoreToFeeling(mood.happiness, MOOD_LIMITS.HAPPINESS, {
+    high: FEELINGS.POSITIVE,
+    low: FEELINGS.NEGATIVE,
+    neutral: 'neutral',
+  });
+
+  return currentHappiness;
+}
 
 const sr = new Sickrage({
   server: '192.168.1.10',
@@ -29,6 +42,32 @@ const getAllShows = (opts) => {
       reject(err);
     });
   });
+};
+
+const getYahooAuctions = () => {
+  return new Promise((resolve, reject) => {
+    scrape().then((response) => {
+      const auctions = transform.allAuctions(response);
+      console.log(auctions);
+      resolve(auctions);
+    }).catch((err) => {
+      console.log(err);
+      reject(err);
+    });
+  });
+};
+
+const alertUser = (response) => {
+  const auctions = transform.allAuctions(response);
+  sendMessage(CONTACTS[0].id, { text: auctions });
+}
+
+const getMood = () => {
+  const currentMood = mood.currentHappiness();
+  console.log(currentMood);
+  const moodPhrases = CURRENT_MOOD[currentMood];
+
+  return _.sample(moodPhrases);
 };
 
 const getGif = (entities) => {
@@ -76,10 +115,6 @@ const getResponse = (entities) => {
 };
 
 const updateMood = (entities) => {
-  const returnFeeling = (obj) => {
-    return obj;
-  }
-
   let feeling;
 
   _.forOwn(entities, (value, key) =>{
@@ -103,4 +138,7 @@ module.exports = {
   getGif,
   getResponse,
   updateMood,
+  getYahooAuctions,
+  getMood,
+  alertUser,
 };

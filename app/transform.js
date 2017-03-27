@@ -9,6 +9,17 @@ const allShows = (shows) => {
   return text;
 };
 
-module.exports ={
+const allAuctions = (auctions) => {
+  let text = '';
+
+  auctions.forEach((auction, key) => {
+    text += `${key + 1}. ${auction}\n`;
+  });
+
+  return text;
+};
+
+module.exports = {
   allShows,
+  allAuctions,
 };

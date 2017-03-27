@@ -41,6 +41,26 @@ GREETINGS[FEELINGS.ANGRY] = [
   "Go away!",
 ];
 
+const CURRENT_MOOD = {};
+
+CURRENT_MOOD[FEELINGS.POSITIVE] = [
+  "I feel great!",
+  "Feeling good :D",
+  "I\'m awesome!!!",
+  "I\'m well :)",
+];
+CURRENT_MOOD[FEELINGS.NEGATIVE] = [
+  "I\'m sad, human :(",
+  "I feel like a bottomless pit... sigh :(",
+  "Not feeling very well :\'(",
+  "Could be better... :(",
+];
+CURRENT_MOOD[FEELINGS.NEUTRAL] = [
+  "I\'m alright.",
+  "Feeling okay.",
+  "Not too bad.",
+];
+
 const ACKNOWLEDGING_PHRASES = {};
 
 ACKNOWLEDGING_PHRASES[FEELINGS.POSITIVE] = [
@@ -110,4 +130,5 @@ module.exports = {
   GIF_QUERIES,
   GREETINGS,
   MOOD_LIMITS,
+  CURRENT_MOOD,
 }

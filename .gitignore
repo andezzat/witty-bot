@@ -3,3 +3,4 @@ ngrok
 ngrok.exe
 config.js
 npm-debug.log
+app/contacts.json

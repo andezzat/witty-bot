@@ -2,6 +2,9 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const Wit = require('node-wit').Wit;
 const log = require('node-wit').log;
+const ms = require('ms');
+const { scrape } = require('./scraper');
+const logic = require('./logic');
 
 const { eventHandler, receivedBotResponse } = require('./handler');
 const { loopThroughEvents } = require('./helper');
@@ -49,3 +52,16 @@ app.post('/webhook', (req, res, next) => {
 app.listen(app.get('port'), () => {
   console.log('Running on port', app.get('port'));
 });
+
+setInterval(() => {
+  console.log("It's time...");
+  scrape().then((response) => {
+    const text = response.toString().toLowerCase();
+
+    if (text.includes('vvt') || text.includes('sard') || text.includes('beams')) {
+      logic.alertUser(response);
+    }
+  }).catch((err) => {
+    console.log(err);
+  });
+}, ms('1hr'))
